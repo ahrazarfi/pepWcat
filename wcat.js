@@ -1,59 +1,56 @@
 let fs = require("fs");
-// let str=fs.readFileSync("f.txt").toString()
-// console.log(str);
 
-(function () {
-  let cmd = process.argv.slice(2);
+let cmd = process.argv.slice(2);
 
-  let opt = [];
-  let file = [];
-  let str = ``;
+let opt = [];
+let file = [];
+let str = ``;
 
-  for (let i = 0; i < cmd.length; i++) {
-    if (cmd[i].startsWith("-")) {
-      opt.push(cmd[i]);
-    } else {
-      file.push(cmd[i]);
-    }
-  }
-
-  for (let j = 0; j < file.length; j++) {
-    if (fs.existsSync(file[j])) {
-      str += fs.readFileSync(file[j]).toString();
-    } else {
-      console.log("Invalid file");
-      return;
-    }
-  }
-  str = str.split("\n");
-
-  if (opt.includes("-s")) {
-    str = convToSinLineBreak(str);
-  }
-  if (opt.includes("-b") && opt.includes("-n")) {
-    if (opt.indexOf("-n") > opt.indexOf("-b")) {
-      //implement -b
-      str = addNumtoNonEmpty(str);
-    } else {
-      //implement -n
-      str = addNumtoAllLines(str);
-    }
+for (let i = 0; i < cmd.length; i++) {
+  if (cmd[i].startsWith("-")) {
+    opt.push(cmd[i]);
   } else {
-    //either one is present or none are present
-    if (opt.includes("-n")) {
-      //implement -n
-      str = addNumtoAllLines(str); 
-    }
-    if (opt.includes("-b")) {
-      //implement -b
-      str = addNumtoNonEmpty(str);
-    }
+    file.push(cmd[i]);
   }
+}
 
-  str = str.join("\n");
+for (let j = 0; j < file.length; j++) {
+  if (fs.existsSync(file[j])) {
+    str += fs.readFileSync(file[j]).toString();
+  } else {
+    console.log("Invalid file");
+    return;
+  }
+}
+str = str.split("\n");
 
-  console.log(str);
-})();
+if (opt.includes("-s")) {
+  str = convToSinLineBreak(str);
+}
+if (opt.includes("-b") && opt.includes("-n")) {
+  if (opt.indexOf("-n") > opt.indexOf("-b")) {
+    //implement -b
+    str = addNumtoNonEmpty(str);
+  } else {
+    //implement -n
+    str = addNumtoAllLines(str);
+  }
+} else {
+  //either one is present or none are present
+  if (opt.includes("-n")) {
+    //implement -n
+    str = addNumtoAllLines(str); 
+  }
+  if (opt.includes("-b")) {
+    //implement -b
+    str = addNumtoNonEmpty(str);
+  }
+}
+
+str = str.join("\n");
+
+console.log(str);
+
 
 function convToSinLineBreak(arr) {
   let v = [];
